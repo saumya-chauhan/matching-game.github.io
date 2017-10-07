@@ -1,30 +1,61 @@
 <!DOCTYPE html>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.1/sweetalert2.all.min.js"></script>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Matching Game - Part 4</title>
     <style>
-        img {
+	  body { 
+    background-image: url('w3css.gif');
+	 background-size: cover;
+	  background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+   }
+     
+h1 {
+    color: red;
+}
+
+h3 {
+    color: blue;
+}
+     img {
             position: absolute;
         }
 
-        div {
+        #leftSide {
             position: absolute;
-            width: 500px;
-            height: 500px;
+            width: 100%;
+            height: 100%;
         }
 
         #rightSide {
-            left: 500px;
+		    position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 50%;
             border-left: 1px solid black;
         }
+        
     </style>
 </head>
-<body onload="startGame()">
-    <h1>Matching Game - Part 4</h1>
-    <p>Click on the extra smiling face on the left.</p>
-    <div id="leftSide"></div>
-    <div id="rightSide"></div>
+<body onload="startGame()" style="background-image:url('abc.jpg')">
+<center><div style="background-color:white; margin-top:-20px">
+  <h1><u>Matching Game</u></h1>
+    <h3>Click on the extra smiling face on the left.</h3>
+</div></center>
+<div class="container" >
+  
+		  <br></br><br></br>
+		<div class="row">
+        <div class="col-lg-4">
+		<div id="leftSide"></div>  </div> 
+		<div class="col-lg-8">
+	</div>
+		 <div id="rightSide"></div> </div>
+	
+	</div>
     <script>
         var imageHeight = 100;
         var imageWidth = 100;
@@ -40,6 +71,7 @@
          * Initializes and starts the game.
          */
         function startGame() {
+		
             generateFaces();
             copyLeftToRightSide();
             registerEventHandlerToLastImage();
@@ -91,17 +123,72 @@
         function registerEventHandlerToLastImage() {
             theLeftSide.lastChild.onclick = nextLevel;
         }
-
-        /**
+       /**
          * Registers the game over event handler.
          */
         function registerGameOverEventHandler() {
             theBody.onclick = function gameOver() {
-                alert("Game Over!\n"+ "you passed " +  count + " levels" );
-                theBody.onclick = null;
+			swal({
+  title: 'You Passed '+ count + " levels",
+  text: "Congratulations! ",
+  
+  type: 'success',
+  showCancelButton: true,
+  confirmButtonText: 'Play More',
+  cancelButtonText: 'Feedback',
+  confirmButtonClass: 'btn btn-success',
+  cancelButtonClass: 'btn btn-danger',
+  buttonsStyling: false
+}).then(function () {
+  window.location.reload();
+}, function (dismiss) {
+  // dismiss can be 'cancel', 'overlay',
+  // 'close', and 'timer'
+  if (dismiss === 'cancel') {
+   swal.setDefaults({
+  input: 'text',
+  confirmButtonText: 'Next &rarr;',
+  showCancelButton: true,
+  animation: false,
+  progressSteps: ['1', '2', '3']
+})
+
+var steps = [
+  {
+    title: 'Question 1',
+    text: 'HOW MUCH U LIKED THE GAME'
+  },
+  {
+    title: 'Question 2',
+    text: 'WHAT TYPE OF GAMES ARE YOU FAVORITE'
+  },
+  {
+    title: 'Question 3',
+    text: 'WILL YOU SHARE IT WITH YOUR FRIENDS'
+  }
+]
+
+swal.queue(steps).then(function (result) {
+  swal.resetDefaults()
+  swal({
+    title: 'All done!',
+    html:
+      'Thanks for your feedback: <pre>' +
+        result +
+      '</pre>',
+    confirmButtonText: 'Lovely!'
+  })
+}, function () {
+  swal.resetDefaults()
+})
+  }
+})
+   
+
+   theBody.onclick = null;
                 theLeftSide.lastChild.onclick = null;
-				window.location.reload();
-            };
+				check();
+            ;}
         }
 
         /**
@@ -109,7 +196,7 @@
          */
         function nextLevel(event){
             event.stopPropagation();
-            numberOfFaces += 5;
+            numberOfFaces += 2;
             startGame();
 			count++;
         }
@@ -124,6 +211,17 @@
         function randomBetween(min, max) {
             return parseInt(Math.floor(Math.random() * (max - min + 1)) + min);
         }
+		
+		
+		/**<div class="row">
+     <div class="col-lg-3"></div>
+	 <div class="col-lg-6">
+		<h1>Matching Game - Part 4</h1>
+		<h2>Click on the extra smiling face on the left.</h2>
+		  </div>
+		  <div class="col-lg-3"></div></div>**/
+		
+		
     </script>
 	</body>
 </html>
